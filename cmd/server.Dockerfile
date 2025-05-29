@@ -1,7 +1,7 @@
 FROM golang:1.24-alpine3.21 AS builder
 
-COPY . /github.com/akisim0n/chat-server-service/cmd/
-WORKDIR /github.com/akisim0n/chat-server-service/cmd/
+COPY . /github.com/akisim0n/chat-server-service/
+WORKDIR /github.com/akisim0n/chat-server-service/
 
 RUN go mod download
 RUN go build -o ./bin/chat_server server/main.go

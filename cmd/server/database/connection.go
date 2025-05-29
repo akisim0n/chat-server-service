@@ -12,7 +12,7 @@ type DBConfig struct {
 
 func Connect(ctx context.Context) (*pgxpool.Pool, error) {
 	config := DBConfig{
-		"host=localhost port=5432 dbname=chat-service user=admin password=Egalam47 sslmode=disable",
+		"host=chat_service_db port=5432 dbname=chat-service user=admin password=Egalam47 sslmode=disable",
 	}
 
 	pool, err := pgxpool.New(ctx, config.DSN)

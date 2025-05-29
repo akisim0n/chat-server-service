@@ -4,12 +4,15 @@ volumes:
 services:
   pg:
     image: postgres:17.5-alpine3.21
+    hostname: chat_service_db
     environment:
       - "POSTGRES_DB=${PG_DB_NAME}"
       - "POSTGRES_USER=${PG_USER}"
       - "POSTGRES_PASSWORD=${PG_PASSWORD}"
     ports:
       - "${PG_PORT}:5432"
+    networks:
+      - local-network
     volumes:
       - postgres_volume:/home/dak/Programming/databases/postgres/chat-service-temp
 
@@ -19,11 +22,21 @@ services:
       dockerfile: migration.Dockerfile
     restart: on-failure
     environment:
-      DB-HOST: pg
+      DB-HOST: chat_service_db
+    networks:
+      - local-network
 
   server:
     build:
-      context: cmd/server
+      context: cmd
       dockerfile: server.Dockerfile
     ports:
       - "50052:50052"
+    depends_on:
+      - pg
+    networks:
+      - local-network
+    restart: on-failure
+
+networks:
+  local-network: {}
