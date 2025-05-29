@@ -15,8 +15,15 @@ services:
 
   migrator:
     build:
-      context: .
+      context: database/postgres
       dockerfile: migration.Dockerfile
     restart: on-failure
     environment:
       DB-HOST: pg
+
+  server:
+    build:
+      context: cmd/server
+      dockerfile: server.Dockerfile
+    ports:
+      - "50052:50052"

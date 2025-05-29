@@ -1,11 +1,11 @@
 package main
 
 import (
-	"chat-server-service/cmd/server/database"
-	"chat-server-service/cmd/server/repository"
-	chat "chat-server-service/pkg/chatServer_v1"
 	"context"
 	"fmt"
+	"github.com/akisim0n/chat-server-service/cmd/server/database"
+	"github.com/akisim0n/chat-server-service/cmd/server/repository"
+	chat "github.com/akisim0n/chat-server-service/pkg/chatServer_v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
