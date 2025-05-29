@@ -1,6 +1,8 @@
 package main
 
 import (
+	"chat-server-service/cmd/server/database"
+	"chat-server-service/cmd/server/repository"
 	chat "chat-server-service/pkg/chatServer_v1"
 	"context"
 	"fmt"
@@ -12,29 +14,30 @@ import (
 
 const port = 50052
 
-type chatServer struct {
-	chat.UnimplementedChatServerV1Server
-}
-
-func (server *chatServer) Create(ctx context.Context, request *chat.CreateRequest) (*chat.CreateResponse, error) {
-	log.Printf("Received: %v", request.GetUsernames())
-
-	retVal := &chat.CreateResponse{
-		Id: 123,
-	}
-
-	return retVal, nil
-}
-
 func main() {
+
+	ctx := context.Background()
+
 	lis, lisErr := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if lisErr != nil {
 		log.Fatalf("failed to listen: %v", lisErr)
 	}
 
+	dbPool, err := database.Connect(ctx)
+	if err != nil {
+		log.Fatalf("failed to connect database: %v", err)
+	}
+	pingErr := dbPool.Ping(ctx)
+	if pingErr != nil {
+		log.Fatalf("failed to ping database: %v", pingErr)
+	}
+	defer dbPool.Close()
+
+	serverRepo := repository.NewChatServerRepository(dbPool)
+
 	server := grpc.NewServer()
 	reflection.Register(server)
-	chat.RegisterChatServerV1Server(server, &chatServer{})
+	chat.RegisterChatServerV1Server(server, serverRepo)
 
 	log.Printf("Server listening at %v", lis.Addr())
 
