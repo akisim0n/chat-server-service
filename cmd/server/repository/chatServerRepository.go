@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	sq "github.com/Masterminds/squirrel"
-	chat "github.com/akisim0n/chat-server-service/pkg/chatServer_v1"
+	chat "github.com/akisim0n/chat-server-service/cmd/server/pkg/chatServer_v1"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

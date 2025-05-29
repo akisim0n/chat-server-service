@@ -1,4 +1,4 @@
-module github.com/akisim0n/chat-server-service
+module github.com/akisim0n/chat-server-service/cmd/server
 
 go 1.24
 
